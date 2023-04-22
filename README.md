@@ -8,8 +8,8 @@ InstaClone is a proposed social media platform that will allow users to share th
 
 The scope of the project includes the development of the following features:
 
-- [ ] User registration and login
-- [ ] Profile creation and management
+- [x] User registration and login
+- [x] Profile creation and management
 - [ ] Content posting with and without images
 - [ ] Automated image scanning and details extraction
 - [ ] Commenting and likes functionality

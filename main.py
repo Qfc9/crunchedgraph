@@ -7,6 +7,7 @@ from libs.db import User
 from datetime import datetime
 import libs.test
 import libs.auth
+import libs.user
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api
 from flask import Flask
@@ -40,6 +41,8 @@ extraData = {
 # Adding our resources
 api.add_resource(libs.auth.Login, '/login', resource_class_kwargs=extraData)
 api.add_resource(libs.auth.SignUp, '/signup', resource_class_kwargs=extraData)
+
+api.add_resource(libs.user.Me, '/me', resource_class_kwargs=extraData)
 
 api.add_resource(libs.test.Test, '/test', resource_class_kwargs=extraData)
 
