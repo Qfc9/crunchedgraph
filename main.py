@@ -12,25 +12,32 @@ from flask_restful import Resource, Api
 from flask import Flask
 import os
 
-
+# Creating our app
 app = Flask(__name__)
 
+# Loading vars from our environment variables
 username = os.environ['DB_USER']
 password = os.environ['DB_PASSWORD']
 host = os.environ['DB_HOST']
 database = os.environ['DB_NAME']
 
+# Setting up our database
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{username}:{password}@{host}/{database}"
 db = SQLAlchemy(app)
-api = Api(app)
 
+# Setting up our API
+api = Api(app)
+ 
+# Creating our tables
 with app.app_context():
     db.create_all()
 
+# Extra data we want to send to our resources
 extraData = {
     "db": db
 }
 
+# Adding our resources
 api.add_resource(libs.auth.Login, '/login', resource_class_kwargs=extraData)
 api.add_resource(libs.auth.SignUp, '/signup', resource_class_kwargs=extraData)
 
