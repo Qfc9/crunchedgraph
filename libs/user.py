@@ -57,6 +57,7 @@ class Me(Resource):
             if key in User.editable():
                 setattr(user, key, request.get_json()[key])
 
+        # Committing the changes to the database
         try:
             self.db.session.commit()
         except sqlalchemy.exc.IntegrityError:
