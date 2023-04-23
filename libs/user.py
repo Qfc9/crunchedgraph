@@ -4,6 +4,7 @@ import jwt
 import os
 from libs.db import User
 import sqlalchemy
+from libs.utils import isAuthed
 
 class Me(Resource):
     """
@@ -12,46 +13,19 @@ class Me(Resource):
     def __init__(self, db):
         self.db = db
 
-    def get(self):
-        # Getting query params
-        # encoded = request.args
-        # token = encoded["token"]
-
-        # Getting headers
-        token = request.headers.get("Authorization")
-
-        # Extracting the token from the header
-        if type(token) is str:
-            token = token.split(" ")[1]
-
-        try:
-            # Decoding the token, works as validation
-            data = jwt.decode(token, os.environ['JWT_SECRET'], algorithms=["HS256"])
-        except Exception:
-            return {"error": "Invalid token"}, 401
+    @isAuthed
+    def get(self, userHeader: dict):
 
         # Getting the user from the database
-        user: User = self.db.session.execute(self.db.select(User).filter_by(id=data["id"])).scalar_one()
+        user: User = self.db.session.execute(self.db.select(User).filter_by(id=userHeader["id"])).scalar_one()
 
         return user.toDict()
     
-    def post(self):
-        # Getting headers
-        token = request.headers.get("Authorization")
-
-        # Extracting the token from the header
-        if type(token) is str:
-            token = token.split(" ")[1]
-
-        try:
-            # Decoding the token, works as validation
-            data = jwt.decode(token, os.environ['JWT_SECRET'], algorithms=["HS256"])
-        except Exception:
-            return {"error": "Invalid token"}, 401
-        
+    @isAuthed
+    def post(self, userHeader: dict):
         # Getting the user from the database
         # TODO duplicate entries are not allowed, protect against that
-        user: User = self.db.session.execute(self.db.select(User).filter_by(id=data["id"])).scalar_one()
+        user: User = self.db.session.execute(self.db.select(User).filter_by(id=userHeader["id"])).scalar_one()
 
         for key in request.get_json():
             if key in User.editable():
