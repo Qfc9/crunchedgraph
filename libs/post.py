@@ -3,26 +3,14 @@ from flask import request
 from flask_restful import Resource, Api
 import jwt
 import os
-
+from libs.utils import isAuthed
 
 class Posting(Resource):
     def __init__(self, db):
         self.db = db
 
-    def get(self) -> dict:
-        # Getting headers
-        token = request.headers.get("Authorization")
-
-        # Extracting the token from the header
-        if type(token) is str:
-            token = token.split(" ")[1]
-
-        try:
-            # Decoding the token, works as validation
-            data = jwt.decode(token, os.environ['JWT_SECRET'], algorithms=["HS256"])
-        except Exception:
-            return {"error": "Invalid token"}, 401
-        
+    @isAuthed
+    def get(self, userHeader) -> dict:
         # TODO figure out filtering so we dont get other peoples posts
         post: list[Post] = self.db.session.query(Post).all()
         if post is None:
@@ -33,25 +21,12 @@ class Posting(Resource):
         #     data.append(p.toDict())
         return data
     
-    def post(self) -> dict:
-        # Getting headers
-        token = request.headers.get("Authorization")
-
-        # Extracting the token from the header
-        if type(token) is str:
-            token = token.split(" ")[1]
-
-        try:
-            # Decoding the token, works as validation
-            data = jwt.decode(token, os.environ['JWT_SECRET'], algorithms=["HS256"])
-        except Exception:
-            return {"error": "Invalid token"}, 401
-
-
+    @isAuthed
+    def post(self, userHeader) -> dict:
         try:
             request.get_json()
 
-            userId = data["id"]
+            userId = userHeader["id"]
             text = request.get_json()["text"]
 
             user: User = self.db.session.query(User).filter_by(id=userId).first()
