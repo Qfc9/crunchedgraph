@@ -62,7 +62,7 @@ class Login(Resource):
         # Generate a token backed on the user's username
         encoded = jwt.encode(
             {
-                "username": username,
+                "id": user.id,
             },
             os.environ['JWT_SECRET'],
             algorithm="HS256"
