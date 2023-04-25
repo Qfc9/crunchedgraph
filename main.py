@@ -11,6 +11,7 @@ import libs.auth
 import libs.user
 import libs.post
 import libs.photo
+import libs.likes
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api
 from flask import Flask
@@ -47,6 +48,7 @@ api.add_resource(libs.auth.SignUp, '/signup', resource_class_kwargs=extraData)
 
 api.add_resource(libs.user.Me, '/me', resource_class_kwargs=extraData)
 api.add_resource(libs.post.Posting, '/post', resource_class_kwargs=extraData)
+api.add_resource(libs.likes.Likes, '/like', resource_class_kwargs=extraData)
 
 api.add_resource(libs.photo.Photo, '/photo', resource_class_kwargs=extraData)
 

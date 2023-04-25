@@ -64,5 +64,20 @@ class Photo(db.Model):
     disabled = db.Column(db.Boolean, default=False)
 
 class PhotoTags(db.Model):
-    photoId = db.Column(db.Integer, db.ForeignKey("photo.id"), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    photoId = db.Column(db.Integer, db.ForeignKey("photo.id"))
     tag = db.Column(db.String(255))
+
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey("user.id"))
+    postId = db.Column(db.Integer, db.ForeignKey("post.id"))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def toDict(self):
+        return {
+            "id": self.id,
+            "userId": self.userId,
+            "postId": self.postId,
+            "created_at": str(self.created_at)
+        }
