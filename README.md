@@ -10,7 +10,7 @@ The scope of the project includes the development of the following features:
 
 - [x] User registration and login
 - [x] Profile creation and management
-- [ ] Content posting with and without images
+- [x] Content posting with and without images
 - [ ] Automated image scanning and details extraction
 - [ ] Commenting and likes functionality
 - [ ] User search and friend requests
