@@ -3,12 +3,14 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 # Importing our libraries
+from libs.dbInit import db
 from libs.db import User, Post, Photo, PhotoTags
 from datetime import datetime
 import libs.test
 import libs.auth
 import libs.user
 import libs.post
+import libs.photo
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api
 from flask import Flask
@@ -25,7 +27,7 @@ database = os.environ['DB_NAME']
 
 # Setting up our database
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{username}:{password}@{host}/{database}"
-db = SQLAlchemy(app)
+db.init_app(app)
 
 # Setting up our API
 api = Api(app)
@@ -45,6 +47,8 @@ api.add_resource(libs.auth.SignUp, '/signup', resource_class_kwargs=extraData)
 
 api.add_resource(libs.user.Me, '/me', resource_class_kwargs=extraData)
 api.add_resource(libs.post.Posting, '/post', resource_class_kwargs=extraData)
+
+api.add_resource(libs.photo.Photo, '/photo', resource_class_kwargs=extraData)
 
 api.add_resource(libs.test.Test, '/test', resource_class_kwargs=extraData)
 
