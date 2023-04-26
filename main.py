@@ -47,6 +47,9 @@ api.add_resource(libs.auth.Login, '/login', resource_class_kwargs=extraData)
 api.add_resource(libs.auth.SignUp, '/signup', resource_class_kwargs=extraData)
 
 api.add_resource(libs.user.Me, '/me', resource_class_kwargs=extraData)
+api.add_resource(libs.user.Search, '/user', resource_class_kwargs=extraData)
+api.add_resource(libs.user.GetBy, '/user/<userId>', resource_class_kwargs=extraData)
+
 api.add_resource(libs.post.Posting, '/post', resource_class_kwargs=extraData)
 api.add_resource(libs.likes.Likes, '/like', resource_class_kwargs=extraData)
 
