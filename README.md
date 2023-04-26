@@ -11,9 +11,9 @@ The scope of the project includes the development of the following features:
 - [x] User registration and login
 - [x] Profile creation and management
 - [x] Content posting with and without images
-- [ ] Automated image scanning and details extraction
-- [ ] Commenting and likes functionality
-- [ ] User search and friend requests
+- [x] Automated image scanning and details extraction
+- [x] likes functionality
+- [ ] User search
 - [ ] Notifications and activity feeds (STRETCH GOAL)
 - [ ] Responsive web design for mobile and desktop devices
 - [ ] API-based communication between frontend and backend

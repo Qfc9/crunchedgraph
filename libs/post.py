@@ -5,10 +5,14 @@ import jwt
 import os
 from libs.utils import isAuthed
 import base64
+from ultralytics import YOLO
+
 
 class Posting(Resource):
     def __init__(self, db):
         self.db = db
+        self.yoloModel = YOLO("yolov8x.pt")
+
 
     @isAuthed
     def get(self, userHeader) -> dict:
@@ -63,13 +67,22 @@ class Posting(Resource):
             self.db.session.commit()
 
             # TODO validate photo
-            with open(f"images/{photo.id}.png", "wb") as f:
+            fileName = f"images/{photo.id}.png"
+            with open(fileName, "wb") as f:
                 f.write(base64.b64decode(imageBase64))
 
+
+            results = self.yoloModel(fileName)
+            tags = set()
+            for result in results:
+                for box in result.boxes:
+                    tags.add(self.yoloModel.names[int(box.cls)])
+
             # TODO add photoTags, with ML
-            # photoTags = PhotoTags(photoId=photo.id, userId=userId)
-            # self.db.session.add(photoTags)
-            # self.db.session.commit()
+            for tag in tags:
+                photoTags = PhotoTags(photoId=photo.id, tag=tag)
+                self.db.session.add(photoTags)
+                self.db.session.commit()
 
             # Fixing the chicken and the egg problem
             post.photoId = photo.id
